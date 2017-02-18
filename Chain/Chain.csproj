@@ -80,6 +80,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Blockchain\Blockchain.csproj">
+      <Project>{d9a90f8e-fbc8-4074-b0fd-d50406da4d5c}</Project>
+      <Name>Blockchain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BlockControl\BlockControl.csproj">
       <Project>{15E4E331-0FF8-4685-B526-86EFF118C696}</Project>
       <Name>BlockControl</Name>
