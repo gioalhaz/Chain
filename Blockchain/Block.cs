@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -7,26 +8,54 @@ using System.Threading.Tasks;
 
 namespace Blockchain
 {
+    public delegate void NeedRecalculationDelegate(Block block);
+
     public class Block
     {
-        public int Difficulty { set; get; }
+        private int difficalty = 0;
+        private string blockNumber;
+        private string prevBlockHash;
+        private string data;
 
-        public string BlockNumber { set; get; }
+        public NeedRecalculationDelegate NeedRecalculationDelegate { set; private get; }
 
-        public int LastNonce { set; get; }
+        public bool NeedRecalculation { private set; get; }
 
-        public string PrevBlockHash { set; get; }
+        // Count of leading '0' characters
+        public int Difficulty { set { difficalty = value; SetNeedRecalculationOn(); } get { return difficalty; } }
 
-        public string Data { set; get; }
+        public string BlockNumber { set { blockNumber = value; SetNeedRecalculationOn(); } get { return blockNumber; } }
 
-        public string Pow { get; private set; }
+        public int LastNonce { private set; get; }
+
+        public TimeSpan LastPowTime { private set; get; }
+
+        public string PrevBlockHash { set { prevBlockHash = value; SetNeedRecalculationOn(); } get { return prevBlockHash; } }
+
+        public string Data { set { data = value; SetNeedRecalculationOn(); } get { return data; } }
+
+        public string Pow { private set; get; }
 
         public void recalculate()
         {
             StringBuilder str = new StringBuilder();
-
             str.Append(BlockNumber).Append(Data).Append(PrevBlockHash);
-            calculatePow(str.ToString(), Difficulty/2);
+
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
+
+            calculatePow(str.ToString(), Difficulty);
+
+            stopWatch.Stop();
+
+            LastPowTime = stopWatch.Elapsed;
+            NeedRecalculation = false;
+        }
+
+        private void SetNeedRecalculationOn()
+        {
+            NeedRecalculation = true;
+            NeedRecalculationDelegate?.Invoke(this);
         }
 
         private void calculatePow(string blockData, int zeroCount)
@@ -45,9 +74,11 @@ namespace Blockchain
                 bytes = sha256.ComputeHash(bytes);
                 goodHash = sha256.ComputeHash(bytes);
 
+                /*each value is in 4 bits*/
                 for (int i = 0; i < zeroCount; i++)
                 {
-                    if (goodHash[i] != 0)
+                    var value = goodHash[i/2] & ((i % 2 == 0) ? 0xF0 : 0x0F);
+                    if (value != 0)
                     {
                         goodHash = null;
                         break;
@@ -66,21 +97,46 @@ namespace Blockchain
             LastNonce = nonce;
         }
 
-        public bool CheckPow()
+        private bool checkHash()
         {
-            bool result = true;
-             
-            var chars = Pow.ToCharArray();
-            for (int i = 0; i < Difficulty; i++)
+            StringBuilder str = new StringBuilder();
+            str.Append(BlockNumber).Append(Data).Append(PrevBlockHash).Append(LastNonce);
+
+            SHA256 sha256 = SHA256Managed.Create();
+            var bytes = Encoding.UTF8.GetBytes(str.ToString());
+
+            // Bitcoin hashcash means double hash
+            bytes = sha256.ComputeHash(bytes);
+            var hash = sha256.ComputeHash(bytes);
+
+            StringBuilder hashString = new StringBuilder();
+            foreach (byte x in hash)
             {
-                if (chars[i] != '0')
-                {
-                    result = false;
-                    break;
-                }
+                hashString.Append(String.Format("{0:x2}", x));
             }
 
+            return hashString.ToString().CompareTo(Pow) == 0;
+        }
+
+        // Check POW string
+        public bool CheckPow()
+        {
+            if (Pow == null || Pow.Length == 0)
+                return false;
+
+            bool result = true;
+
+            // Check for leading 0s, then compare hash
+            if (Pow.IndexOf("".PadLeft(Difficulty, '0'), 0, Difficulty) != 0
+                || checkHash() == false)
+                return false;
+
             return result;
+        }
+
+        public bool Check()
+        {
+            return CheckPow();
         }
     }
 }

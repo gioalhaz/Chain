@@ -12,17 +12,40 @@ namespace Chain
 {
     public partial class Form1 : Form
     {
+        private Blockchain.Blockchain chain = new Blockchain.Blockchain();
+
         public Form1()
         {
             InitializeComponent();
+            upDownDifficulty.Value = Blockchain.Blockchain.DEFAULT_DIFFICALTY;
+
+            InitBlockchain();
+        }
+
+        private void InitBlockchain()
+        {
+            chain.Init(5, (int)upDownDifficulty.Value);
+
+            foreach (var block in chain.Chain)
+            {
+                var blockControl = new BlockControl.BlockControl();
+                blockControl.Block = block;
+                flowLayoutPanel1.Controls.Add(blockControl);
+            }
         }
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            block01.BlockNumber = "1";
-            block01.PrevBlockHash = "0000000000000000000000000000000000000000000000000000000000000000";
+            Cursor.Current = Cursors.WaitCursor;
 
-            block01.recalculate();
+            chain.Difficulty = (int)upDownDifficulty.Value;
+            chain.recalculate();
+            foreach (var control in flowLayoutPanel1.Controls)
+            {
+                ((BlockControl.BlockControl)control).refreshControls();
+            }
+
+            Cursor.Current = Cursors.Default;
         }
 
     }
