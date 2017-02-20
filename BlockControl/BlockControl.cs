@@ -14,7 +14,7 @@ namespace BlockControl
 {
     public partial class BlockControl: UserControl
     {
-        private Color OkColor = Color.MediumSeaGreen;
+        private Color OkColor = Color.MediumAquamarine;//Color.MediumSeaGreen;
         private Color ErrorColor = Color.Salmon;
 
         private Block block;
@@ -25,13 +25,15 @@ namespace BlockControl
             BackColor = OkColor;
         }
 
+        public NeedRecalculationDelegate NeedRecalculationDelegate { set; private get; }
+
         public Block Block
         {
             set
             {
                 block = value;
                 if (block != null)
-                    block.NeedRecalculationDelegate = NeedRecalculationDelegate;
+                    block.NeedRecalculationDelegate = NeedRecalculationCallback;
 
                 refreshControls();
             }
@@ -97,21 +99,22 @@ namespace BlockControl
             toolTips.SetToolTip(textPrevBlock, textPrevBlock.Text);
         }
 
-        public void check()
-        {
-            if (block.Check() == false)
-            {
-                BackColor = ErrorColor;
-            }
-            else
-            {
-                BackColor = OkColor;
-            }
-        }
+        //public void check()
+        //{
+        //    if (block.Check() == false)
+        //    {
+        //        BackColor = ErrorColor;
+        //    }
+        //    else
+        //    {
+        //        BackColor = OkColor;
+        //    }
+        //}
 
-        public void NeedRecalculationDelegate(Block block)
+        public void NeedRecalculationCallback(Block block)
         {
             BackColor = block.NeedRecalculation ? ErrorColor : OkColor;
+            NeedRecalculationDelegate?.Invoke(block);
         }
 
         private void textData_TextChanged(object sender, EventArgs e)

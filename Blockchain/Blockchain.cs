@@ -62,21 +62,17 @@ namespace Blockchain
             }
         }
 
-        /// <summary>
-        /// Checks chain for consistancy
-        /// 1. Does blocks ref to prev block is correct
-        /// 2. Is POW hash correct
-        /// </summary>
-        /// <returns></returns>
-        public bool Check()
+        public void checkLinks()
         {
-            bool result = true;
+            bool changeNeedRecalcFlag = false;
             foreach (var block in Chain)
             {
-                block.Check();
+                if (changeNeedRecalcFlag)
+                    block.NeedRecalculation = true;
+                else
+                    if (block.NeedRecalculation)
+                        changeNeedRecalcFlag = true;
             }
-
-            return result;
         }
     }
 }

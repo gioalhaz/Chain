@@ -19,7 +19,7 @@ namespace Blockchain
 
         public NeedRecalculationDelegate NeedRecalculationDelegate { set; private get; }
 
-        public bool NeedRecalculation { private set; get; }
+        public bool NeedRecalculation { set; get; }
 
         // Count of leading '0' characters
         public int Difficulty { set { difficalty = value; SetNeedRecalculationOn(); } get { return difficalty; } }

@@ -45,10 +45,12 @@
             // 
             // textNumber
             // 
+            this.textNumber.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.textNumber.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textNumber.Location = new System.Drawing.Point(28, 4);
             this.textNumber.Name = "textNumber";
             this.textNumber.ReadOnly = true;
-            this.textNumber.Size = new System.Drawing.Size(57, 20);
+            this.textNumber.Size = new System.Drawing.Size(37, 20);
             this.textNumber.TabIndex = 0;
             // 
             // label1
@@ -75,6 +77,7 @@
             // 
             this.textData.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.textData.Font = new System.Drawing.Font("Arial Rounded MT Bold", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textData.Location = new System.Drawing.Point(5, 48);
             this.textData.Multiline = true;
             this.textData.Name = "textData";
@@ -86,7 +89,9 @@
             // 
             this.textPrevBlock.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textPrevBlock.Location = new System.Drawing.Point(47, 121);
+            this.textPrevBlock.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.textPrevBlock.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.textPrevBlock.Location = new System.Drawing.Point(47, 117);
             this.textPrevBlock.Name = "textPrevBlock";
             this.textPrevBlock.ReadOnly = true;
             this.textPrevBlock.Size = new System.Drawing.Size(185, 20);
@@ -96,17 +101,18 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Sylfaen", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(5, 121);
+            this.label3.Location = new System.Drawing.Point(5, 118);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(36, 18);
+            this.label3.Size = new System.Drawing.Size(38, 18);
             this.label3.TabIndex = 4;
-            this.label3.Text = "<<==";
+            this.label3.Text = "          ";
             // 
             // textPow
             // 
             this.textPow.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textPow.Location = new System.Drawing.Point(47, 144);
+            this.textPow.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.textPow.Location = new System.Drawing.Point(47, 141);
             this.textPow.Name = "textPow";
             this.textPow.ReadOnly = true;
             this.textPow.Size = new System.Drawing.Size(185, 20);
@@ -116,11 +122,12 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Sylfaen", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(5, 144);
+            this.label4.Location = new System.Drawing.Point(5, 142);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(39, 18);
             this.label4.TabIndex = 6;
             this.label4.Text = "POW";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label5
             // 
@@ -137,6 +144,7 @@
             // textNonce
             // 
             this.textNonce.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.textNonce.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.textNonce.Location = new System.Drawing.Point(122, 4);
             this.textNonce.Name = "textNonce";
             this.textNonce.ReadOnly = true;
@@ -157,7 +165,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.BackColor = System.Drawing.Color.MediumAquamarine;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.labelTimeSpan);
             this.Controls.Add(this.label5);
@@ -171,7 +179,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textNumber);
             this.Name = "BlockControl";
-            this.Size = new System.Drawing.Size(235, 169);
+            this.Size = new System.Drawing.Size(235, 165);
             this.ResumeLayout(false);
             this.PerformLayout();
 
